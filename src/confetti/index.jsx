@@ -42,7 +42,7 @@ const ConfettiPopup = () => {
       }}
     >
       <h2 style={{ fontSize: '18px', fontWeight: '600', color: '#111' }}>
-        🎉 GitHub Confetti
+        🎉 Confetti
       </h2>
 
       <div style={{ marginTop: '10px', width: '100%', textAlign: 'center' }}>
