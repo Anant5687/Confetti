@@ -16,8 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build:ext": "npm run build && node ./scripts/esbuild-content.js"
   },
   "eslintConfig": {
     "extends": [
@@ -38,6 +37,7 @@
     ]
   },
   "devDependencies": {
+    "esbuild": "^0.25.12",
     "tailwindcss": "^3.4.18"
   }
 }

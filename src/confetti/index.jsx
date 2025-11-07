@@ -1,37 +1,90 @@
-import React from 'react';
-import confetti from 'canvas-confetti';
+/* global chrome */
 
-const Confetti = () => {
-  const TriggerConfetti = () => {
-    confetti({
-      particleCount: 1000,
-      spread: 120,
-      origin: { y: 1, x: 0 },
+import React, { useEffect, useState } from 'react';
+
+const ConfettiPopup = () => {
+  const [isActive, setIsActive] = useState(false);
+  const [isSound, setIsSound] = useState(false);
+
+  // Load current states from chrome storage
+  useEffect(() => {
+    chrome.storage.sync.get(["confettiActive", "soundActive"], (result) => {
+      setIsActive(!!result.confettiActive);
+      setIsSound(!!result.soundActive);
     });
-    confetti({
-      particleCount: 1000,
-      spread: 120,
-      origin: { y: 1, x: 1 },
-    });
-    
+  }, []);
+
+  const handleToggleConfetti = () => {
+    const newValue = !isActive;
+    setIsActive(newValue);
+    chrome.storage.sync.set({ confettiActive: newValue });
+  };
+
+  const handleToggleSound = () => {
+    const newValue = !isSound;
+    setIsSound(newValue);
+    chrome.storage.sync.set({ soundActive: newValue });
   };
 
   return (
     <div
-      className="p-4 flex justify-center items-center flex-col"
-      id="container"
+      style={{
+        width: '320px',
+        height: '230px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#f9fafb',
+        borderRadius: '12px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        fontFamily: 'Inter, sans-serif'
+      }}
     >
-      <h1 className="text-base font-bold p-4">Confetti</h1>
-      <button
-        onClick={TriggerConfetti}
-        id="btn"
-        className="bg-blue-0 text-white p-2 text-sm rounded-[8px]"
-      >
+      <h2 style={{ fontSize: '18px', fontWeight: '600', color: '#111' }}>
+        🎉 GitHub Confetti
+      </h2>
 
-        Trigger
-      </button>
+      <div style={{ marginTop: '10px', width: '100%', textAlign: 'center' }}>
+        <p style={{ fontSize: '14px', color: '#555' }}>
+          Confetti: <strong>{isActive ? 'Active ✅' : 'Inactive ❌'}</strong>
+        </p>
+        <button
+          onClick={handleToggleConfetti}
+          style={{
+            background: isActive ? '#16a34a' : '#ef4444',
+            color: '#fff',
+            padding: '8px 16px',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontWeight: '600',
+            marginBottom: '10px',
+          }}
+        >
+          {isActive ? 'Deactivate Confetti' : 'Activate Confetti'}
+        </button>
+
+        <p style={{ fontSize: '14px', color: '#555' }}>
+          Sound: <strong>{isSound ? 'On 🔊' : 'Off 🔇'}</strong>
+        </p>
+        <button
+          onClick={handleToggleSound}
+          style={{
+            background: isSound ? '#3b82f6' : '#9ca3af',
+            color: '#fff',
+            padding: '8px 16px',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontWeight: '600',
+          }}
+        >
+          {isSound ? 'Disable Sound' : 'Enable Sound'}
+        </button>
+      </div>
     </div>
   );
 };
 
-export default Confetti;
+export default ConfettiPopup;
