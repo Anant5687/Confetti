@@ -1,3 +1,5 @@
+/* global chrome */
+
 import confetti from 'canvas-confetti';
 
 console.log('🚀 GitHub Confetti content script loaded');
@@ -28,10 +30,8 @@ chrome.storage.sync.get(['confettiActive', 'soundActive'], (result) => {
 
       if (labelText === 'Confirm merge' && !btn.dataset.confettiAttached) {
         btn.dataset.confettiAttached = 'true';
-        console.log('🎯 Confetti attached to Merge pull request button');
 
         btn.addEventListener('click', () => {
-          console.log('💥 Merge button clicked!');
           playSound(); // 🔊 play the sound first
 
           confettiNoWorker({
